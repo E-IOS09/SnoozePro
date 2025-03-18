@@ -4,6 +4,7 @@ import ScreenWrapper from "@/components/ScreenWrapper";
 import { colors, spacingX, spacingY } from "@/constants/theme";
 import { verticalScale } from "@/utils/styling";
 import Typo from "@/components/Typo";
+import Button from "@/components/Button";
 
 const Welcome = () => {
     return (
@@ -45,6 +46,11 @@ const Welcome = () => {
 
     <View style={styles.buttonContainer}> 
         {/* Button placeholder */}
+        <Button>
+            <Typo size={22} color={colors.neutral900} fontWeight={"600"}>
+                Get Started 
+            </Typo>
+        </Button>
     </View> 
 </View>
 
