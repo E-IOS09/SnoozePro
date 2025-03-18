@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import {
   ActivityIndicatorProps,
   PressableProps,
+  TextInput,
   TextInputProps,
   TextProps,
   TextStyle,
@@ -72,3 +73,18 @@ export type AppInputProps = TextInputProps & {
   error?: string;
   icon?: Icon;
 };
+
+export type BackButtonProps = {
+    style?: string;
+    iconSize?: number;
+}
+
+export interface InputProps extends TextInputProps {
+    Ref: any;
+    icon?: React.ReactNode;
+    containerStyle?: ViewStyle;
+    inputStyle?: TextStyle;
+    inputRef?: React.RefObject<TextInput>;
+    // label?: string;
+    // error?: string;
+}
