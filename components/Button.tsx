@@ -1,25 +1,20 @@
-import { StyleSheet, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 import React from "react";
-import { CustomButtonProps } from "@/types";
 import { colors, radius } from "@/constants/theme";
 import { verticalScale } from "@/utils/styling";
-import Loading from "./Loading"; // Ensure this file exists at this path
+import Typo from "@/components/Typo";
+import Loading from "@/components/Loading"; // Fixed path
 
+type CustomButtonProps = {
+    style?: ViewStyle;
+    onPress?: () => void;
+    loading?: boolean;
+    children: React.ReactNode;
+};
 
-const Button = ({
-    style,
-    onPress,
-    loading = false,
-    children
-}: CustomButtonProps) => {
-
+const Button = ({ style, onPress, loading = false, children }: CustomButtonProps) => {
     if (loading) {
-        return (
-            <View style={[styles.button, style, { backgroundColor: 'transparent' }]}>
-                <ActivityIndicator color={colors.primary} />
-                <Loading />
-            </View>
-        );
+        return <Loading />;
     }
 
     return (
@@ -28,8 +23,6 @@ const Button = ({
         </TouchableOpacity>
     );
 };
-
-export default Button;
 
 const styles = StyleSheet.create({
     button: {
@@ -40,3 +33,5 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 });
+
+export default Button;
