@@ -1,27 +1,29 @@
-import { Pressable, StyleSheet, View } from "react-native";
-import React, { useState } from "react";
+import { Alert, Pressable, StyleSheet, View } from "react-native";
+import React, { useRef, useState } from "react";
+import { useRouter } from "expo-router";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import Typo from "@/components/Typo";
 import { colors, spacingX, spacingY } from "@/constants/theme";
 import { verticalScale } from "@/utils/styling";
 import BackButton from "@/components/BackButton";
 import Input from "@/components/Input";
-import Button from "@/components/Button"; // Added custom Button import
+import Button from "@/components/Button";
 import * as Icons from 'phosphor-react-native';
-import { useRoute } from "@react-navigation/native";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const emailRef = useRef("");
+    const passwordRef = useRef("");
     const [isLoading, setIsLoading] = useState(false);
-    const router = useRoute();
+    const router = useRouter();
 
-    const handleSubmit = () => {
-        setIsLoading(true);
-        // Add your login logic here
-        console.log("Email:", email, "Password:", password);
-        // Simulate API call
-        setTimeout(() => setIsLoading(false), 2000);
+    const handleSubmit = async () => {
+        if(!emailRef.current || !passwordRef.current) {
+            Alert.alert('Login' , "Please fill all the field");
+            return;
+        }
+        console.log('email:' , emailRef.current);
+        console.log('password:' , passwordRef.current);
+        console.log("good to go ");
     };
 
     return (
@@ -45,8 +47,7 @@ const Login = () => {
 
                     <Input 
                         placeholder="Enter your email"
-                        value={email}
-                        onChangeText={setEmail}
+                        onChangeText={(text) => (emailRef.current = text)}
                         icon={<Icons.At
                             size={verticalScale(26)}
                             color={colors.neutral300}
@@ -55,8 +56,7 @@ const Login = () => {
                     <Input 
                         placeholder="Enter your password"
                         secureTextEntry
-                        value={password}
-                        onChangeText={setPassword}
+                        onChangeText={(text) => (passwordRef.current = text)}
                         icon={<Icons.Lock
                             size={verticalScale(26)}
                             color={colors.neutral300}
@@ -71,7 +71,7 @@ const Login = () => {
                         loading={isLoading}
                         style={styles.loginButton}
                     >
-                        <Typo fontWeight="700" color={colors.black} size={20}>
+                        <Typo fontWeight="700" color={colors.white} size={20}>
                             Login
                         </Typo>
                     </Button>
@@ -79,15 +79,17 @@ const Login = () => {
 
                 {/* Footer */}
                 <View style={styles.footer}>
-                    <Typo size={15}>
+                    <Typo size={15} color={colors.text}>
                         Don't have an account? 
                     </Typo>
-                    <Pressable onPress={() => router.push("/(auth)/register")}>
-                    <Typo size={15}>
-                        Sign Up
-                    </Typo>
+                    <Pressable 
+                        onPress={() => router.push("/(auth)/register")}
+                        style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
+                    >
+                        <Typo size={15} color={colors.primary} fontWeight={'700'}>
+                            Sign Up
+                        </Typo>
                     </Pressable>
-                    
                 </View>
             </View>
         </ScreenWrapper>
@@ -123,14 +125,19 @@ const styles = StyleSheet.create({
         marginTop: 'auto',
         paddingVertical: spacingY._20
     },
-    footerText: {
-        fontSize: verticalScale(15),
-    },
     loginButton: {
         marginTop: spacingY._20,
         backgroundColor: colors.primary,
         borderRadius: 12,
-        paddingVertical: spacingY._15
+        paddingVertical: spacingY._15,
+        // Add these fixes:
+        minHeight: verticalScale(54),  // Ensure button height
+        justifyContent: 'center',
+        shadowColor: colors.neutral900,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 6,
+        elevation: 3,
     }
 });
 
