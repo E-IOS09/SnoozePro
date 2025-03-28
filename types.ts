@@ -11,7 +11,6 @@ import {
   ViewStyle,
 } from "react-native";
 import { Icon } from "phosphor-react-native";
-import { colors } from "./constants/theme";
 
 // Screen wrapper props
 export type ScreenWrapperProps = {
@@ -31,36 +30,34 @@ export type AccountOptionType = {
   title: string;
   icon: ReactNode;
   bgColor: string;
-  routeName?: Href; // Use Href type from expo-router
+  routeName?: Href;
 };
 
-// Add these additional type enhancements:
-export type TypoProps =  {
-    size?: number;
-    color?: string;
-    fontWeight?: TextStyle["fontWeight"];
-    children: any | null ;
-    style? : TextStyle;
-    textProps? :TextProps;
+// Typography props
+export type TypoProps = {
+  size?: number;
+  color?: string;
+  fontWeight?: TextStyle["fontWeight"];
+  children: ReactNode;
+  style?: TextStyle;
+  textProps?: TextProps;
+};
 
-  };
-   
-  // For button.tsx : Custom Button 
-  export interface CustomButtonProps extends TouchableOpacityProps {
-    style?: ViewStyle;
-    onPress?: () => void;
-    loading?: boolean;
-    hasShadow?: boolean;
-    children: React.ReactNode;
+// Custom button props
+export interface CustomButtonProps extends TouchableOpacityProps {
+  style?: ViewStyle;
+  onPress?: () => void;
+  loading?: boolean;
+  hasShadow?: boolean;
+  children: React.ReactNode;
 }
 
 // Text component props
 export type AppTextProps = TextProps & {
   style?: TextStyle;
-//   variant?: keyof typeof colors.textVariants;
 };
 
-// Button component props
+// App button props
 export type AppButtonProps = TouchableOpacityProps & {
   variant?: "primary" | "secondary";
   loading?: boolean;
@@ -74,17 +71,46 @@ export type AppInputProps = TextInputProps & {
   icon?: Icon;
 };
 
+// Back button props
 export type BackButtonProps = {
-    style?: string;
-    iconSize?: number;
+  style?: string;
+  iconSize?: number;
+};
+
+// General input props
+export interface InputProps extends TextInputProps {
+  Ref?: any;
+  icon?: React.ReactNode;
+  containerStyle?: ViewStyle;
+  inputStyle?: TextStyle;
+  inputRef?: React.RefObject<TextInput>;
 }
 
-export interface InputProps extends TextInputProps {
-    Ref: any;
-    icon?: React.ReactNode;
-    containerStyle?: ViewStyle;
-    inputStyle?: TextStyle;
-    inputRef?: React.RefObject<TextInput>;
-    // label?: string;
-    // error?: string;
-}
+// User types
+export type UserType = {
+  uid?: string;
+  email?: string | null;
+  name: string | null;
+  image?: any | null;
+};
+
+export type UserDataType = {
+  name: string;
+  image?: any;
+};
+
+// Auth context type
+export type AuthContextType = {
+  user: UserType | null;
+  setUser: (user: UserType | null) => void;
+  login: (
+    email: string,
+    password: string
+  ) => Promise<{ success: boolean; msg?: string }>;
+  register: (
+    email: string,
+    password: string,
+    name: string
+  ) => Promise<{ success: boolean; msg?: string }>;
+  updateUserData: (userId: string) => Promise<void>;
+};

@@ -9,6 +9,7 @@ import BackButton from "@/components/BackButton";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import * as Icons from 'phosphor-react-native';
+import { useAuth } from "@/contexts/authContext";
 
 const Register = () => {
     const emailRef = useRef("");
@@ -17,17 +18,24 @@ const Register = () => {
     const dobRef = useRef("");
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
+    const {register: registerUser} = useAuth();
 
     const handleSubmit = async () => {
         if(!emailRef.current || !passwordRef.current || !nameRef.current || !dobRef.current) {
             Alert.alert('Sign up' , "Please fill all the field");
             return;
         }
-        console.log('email:' , emailRef.current);
-        console.log('name:' , nameRef.current);
-        console.log('dob:' , dobRef.current);
-        console.log('password:' , passwordRef.current);
-        console.log("good to go ");
+        setIsLoading(true);
+        const res = await registerUser(
+            emailRef.current,
+            passwordRef.current,
+            nameRef.current
+        );
+        setIsLoading(false);
+        console.log("register result : " , res);
+        if (!res.success) {
+            Alert.alert("Sign up" , res.msg)
+        }
     };
 
     return (

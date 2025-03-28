@@ -13,6 +13,8 @@ const Welcome = () => {
     const router = useRouter();
 
     return (
+        
+        
         <ScreenWrapper>
             <View style={styles.container}>
                 {/* Login Section */}

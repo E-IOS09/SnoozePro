@@ -5,12 +5,12 @@ import { useRouter } from "expo-router";
 import { useEffect } from "react";
 
 const Index = () => {
-  const router = useRouter();
-  useEffect(() => {
-    setTimeout(() => {
-      router.push("/(auth)/welcome");
-    }, 2000);
-  }, []);
+  // const router = useRouter();
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     router.push("/(auth)/welcome");
+  //   }, 2000);
+  // }, []);
   return (
     <View style={styles.container}>
       <Image
