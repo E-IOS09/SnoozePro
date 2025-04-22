@@ -1,3 +1,4 @@
+
 import { createContext, ReactNode, useState, useContext, useEffect } from "react";
 import { AuthContextType, UserType } from "@/types";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
@@ -15,8 +16,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        await updateUserData(firebaseUser.uid); // ✅ Fetch full user details from Firestore
-        router.replace("/(tabs)");
+        await updateUserData(firebaseUser.uid); //  Fetch full user details from Firestore
+
+        const currentUserDoc = await getDoc(doc(firestore, "users", firebaseUser.uid));
+        const currentUser = currentUserDoc.data();
+
+        if (currentUser?.onboardingComplete) {
+          router.replace("/(tabs)"); // ✅ go to home
+        } else {
+          router.replace("/(onboarding)/welcome"); // ⬅️ only if not completed
+        }
       } else {
         setUser(null);
         router.replace("/(auth)/welcome");
@@ -70,6 +79,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           email: data.email || null,
           name: data.name || null,
           image: data.image || null,
+          onboardingComplete: data.onboardingComplete || false,
+          preferredWakeTime: data.preferredWakeTime || null,   
+          preferredSleepTime: data.preferredSleepTime || null,
         };
         setUser(userData);
       }

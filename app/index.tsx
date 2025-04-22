@@ -16,7 +16,7 @@ const Index = () => {
       <Image
         style={styles.logo}
         resizeMode="contain"
-        source={require("/Users/eshitamangal/SnoozePro/assets/images/splash-icon-light.png")}
+        source={require("/Users/eshitamangal/SnoozePro/assets/images/logo.png")}
       />
     </View>
   );

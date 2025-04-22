@@ -26,7 +26,7 @@ const Button = ({ style, onPress, loading = false, children }: CustomButtonProps
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: colors.primary,
+        backgroundColor: colors.purple,
         borderRadius: radius._17,
         height: verticalScale(48),
         justifyContent: 'center',

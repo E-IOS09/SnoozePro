@@ -1,4 +1,3 @@
-// Home.tsx
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -11,14 +10,15 @@ import {
 import { useAuth } from "@/contexts/authContext";
 import { colors, spacingX } from "@/constants/theme";
 import { UserCircle, Plus } from "phosphor-react-native";
-import { useNavigation } from "@react-navigation/native"; // <-- import for navigation
-import LogSleepModal from "@/components/LogSleep";
-
+import { useNavigation } from "@react-navigation/native";
+import LogSleepModal from "@/components/LogSleepModal";
+import ViewPreferencesModal from "@/components/ViewPreferencesModal"; // ✅ import the new modal
 
 const Home = () => {
   const { user } = useAuth();
-  const [modalVisible, setModalVisible] = useState(false);
-  const navigation = useNavigation(); // <-- navigation hook
+  const [logModalVisible, setLogModalVisible] = useState(false);
+  const [preferencesVisible, setPreferencesVisible] = useState(false); // ✅ state for preferences modal
+  const navigation = useNavigation();
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -36,29 +36,32 @@ const Home = () => {
       resizeMode="cover"
     >
       <View style={styles.container}>
-        {/* Header with Avatar, Greeting, and Plus Button */}
+        {/* Header */}
         <View style={styles.header}>
           <UserCircle size={40} color={colors.neutral100} weight="light" />
           <View style={styles.textGroup}>
             <Text style={styles.greetingText}>{getGreeting()},</Text>
             <Text style={styles.nameText}>{firstName}</Text>
           </View>
-          <Pressable style={styles.plusButton}>
+          <Pressable
+            style={styles.plusButton}
+            onPress={() => setPreferencesVisible(true)} // ✅ open modal on press
+          >
             <Plus size={20} color={colors.black} weight="bold" />
           </Pressable>
         </View>
 
-        {/* Divider line */}
+        {/* Divider */}
         <View style={styles.divider} />
 
-        {/* Sleeping Image */}
+        {/* Sleep Image */}
         <Image
           source={require("@/assets/images/sleeping.png")}
           style={styles.sleepImage}
           resizeMode="contain"
         />
 
-        {/* Current Time & Date */}
+        {/* Time & Date */}
         <View style={styles.dateTimeContainer}>
           <Text style={styles.timeText}>
             {new Date().toLocaleTimeString([], {
@@ -66,12 +69,17 @@ const Home = () => {
               minute: "2-digit",
             })}
           </Text>
-          <Text style={styles.dateText}>{new Date().toLocaleDateString()}</Text>
+          <Text style={styles.dateText}>
+            {new Date().toLocaleDateString()}
+          </Text>
         </View>
 
-        {/* "Log Sleep" Button */}
+        {/* Log Sleep Button */}
         <View style={styles.logSleepContainer}>
-          <Pressable style={styles.logSleepButton} onPress={() => setModalVisible(true)}>
+          <Pressable
+            style={styles.logSleepButton}
+            onPress={() => setLogModalVisible(true)}
+          >
             <Image
               source={require("@/assets/images/sunny.png")}
               style={styles.buttonIcon}
@@ -86,23 +94,31 @@ const Home = () => {
           </Pressable>
         </View>
 
-        {/* "View Journal" Button (navigates to Stat.tsx) */}
+        {/* View Journal Button */}
         <View style={styles.viewJournalContainer}>
           <Pressable
             style={styles.viewJournalButton}
-            onPress={() => navigation.navigate("Stat")} // <-- go to Stat screen
+            onPress={() => navigation.navigate("journal")}
           >
             <Text style={styles.viewJournalButtonText}>View Journal</Text>
             <Image
-              source={require("@/assets/images/journal.png")} // your journal icon
+              source={require("@/assets/images/journal.png")}
               style={styles.buttonIconRight}
               resizeMode="contain"
             />
           </Pressable>
         </View>
 
-        {/* Modal for Logging Sleep */}
-        <LogSleepModal visible={modalVisible} onClose={() => setModalVisible(false)} />
+        {/* Modals */}
+        <LogSleepModal
+          visible={logModalVisible}
+          onClose={() => setLogModalVisible(false)}
+        />
+
+        <ViewPreferencesModal
+          visible={preferencesVisible}
+          onClose={() => setPreferencesVisible(false)} // ✅ close handler
+        />
       </View>
     </ImageBackground>
   );
@@ -172,8 +188,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#f2f2f2",
   },
-
-  /* "Log Sleep" Button */
   logSleepContainer: {
     marginTop: 40,
     alignItems: "center",
@@ -182,7 +196,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.primary,
+    backgroundColor: colors.purple,
     borderRadius: 10,
     paddingVertical: 12,
     paddingHorizontal: 20,
@@ -198,8 +212,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-
-  /* "View Journal" Button */
   viewJournalContainer: {
     alignItems: "center",
   },
@@ -207,7 +219,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#2f2f3b", // or use colors.primary if you want
+    backgroundColor: "#2f2f3b",
     borderRadius: 10,
     paddingVertical: 12,
     paddingHorizontal: 20,

@@ -1,94 +1,84 @@
-import React, { createContext, ReactNode, useContext, useState } from "react";
+// contexts/SleepContext.tsx
+import React, { createContext, useContext, useState, ReactNode } from "react";
 import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { firestore } from "@/config/firebase";
 import { useAuth } from "@/contexts/authContext";
 
-interface SleepData {
-  id: string;
+// Define the type for a sleep entry
+type SleepEntry = {
+  id: string; // Firestore document ID (usually the date string)
   moodValue: string;
-  ratings: number;
   sleepDateTime: string;
-  wakeDateTime: string;
-}
+};
 
+// Define the shape of the context
 interface SleepContextType {
-  sleepLogs: SleepData[];
+  sleepEntries: SleepEntry[];
   addSleepData: (
-    dateString: string,
-    moodValue: string,
-    ratings: number,
-    sleepDate: Date,
-    wakeDate: Date
+    entry: Omit<SleepEntry, "id">,
+    dateKey: string
   ) => Promise<void>;
   getAllSleepData: () => Promise<void>;
 }
 
-const SleepContext = createContext<SleepContextType | null>(null);
+const SleepContext = createContext<SleepContextType | undefined>(undefined);
 
-export const SleepProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const SleepProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
-  const [sleepLogs, setSleepLogs] = useState<SleepData[]>([]);
+  const [sleepEntries, setSleepEntries] = useState<SleepEntry[]>([]);
 
+  // Save sleep log to Firestore
   const addSleepData = async (
-    dateString: string,
-    moodValue: string,
-    ratings: number,
-    sleepDate: Date,
-    wakeDate: Date
+    entry: Omit<SleepEntry, "id">,
+    dateKey: string
   ) => {
     if (!user?.uid) {
-      console.error("No user is logged in. Cannot add sleep data.");
+      console.warn("User not logged in");
       return;
     }
     try {
-      await setDoc(
-        doc(firestore, "users", user.uid, "sleepData", dateString),
-        {
-          moodValue,
-          ratings,
-          sleepDateTime: sleepDate.toISOString(),
-          wakeDateTime: wakeDate.toISOString(),
-        }
-      );
-      console.log("Sleep data added/updated successfully");
+      const ref = doc(firestore, "users", user.uid, "sleepData", dateKey);
+      await setDoc(ref, entry);
+      console.log("Sleep entry saved to Firestore");
     } catch (error) {
-      console.error("Error adding sleep data:", error);
+      console.error("Error saving sleep data:", error);
     }
   };
 
+  // Fetch all sleep logs from Firestore
   const getAllSleepData = async () => {
     if (!user?.uid) {
-      console.error("No user is logged in. Cannot fetch sleep data.");
+      console.warn("User not logged in");
       return;
     }
     try {
       const colRef = collection(firestore, "users", user.uid, "sleepData");
-      const querySnap = await getDocs(colRef);
-      const allData: SleepData[] = [];
-      querySnap.forEach((docSnap) => {
+      const querySnapshot = await getDocs(colRef);
+      const data: SleepEntry[] = [];
+
+      querySnapshot.forEach((docSnap) => {
         const docData = docSnap.data();
-        allData.push({
+        data.push({
           id: docSnap.id,
           moodValue: docData.moodValue,
-          ratings: docData.ratings,
           sleepDateTime: docData.sleepDateTime,
-          wakeDateTime: docData.wakeDateTime,
         });
       });
-      setSleepLogs(allData);
+
+      setSleepEntries(data);
     } catch (error) {
       console.error("Error fetching sleep data:", error);
     }
   };
 
   return (
-    <SleepContext.Provider value={{ sleepLogs, addSleepData, getAllSleepData }}>
+    <SleepContext.Provider value={{ sleepEntries, addSleepData, getAllSleepData }}>
       {children}
     </SleepContext.Provider>
   );
 };
 
-export const useSleep = (): SleepContextType => {
+export const useSleep = () => {
   const context = useContext(SleepContext);
   if (!context) {
     throw new Error("useSleep must be used within a SleepProvider");

@@ -73,8 +73,9 @@ export type AppInputProps = TextInputProps & {
 
 // Back button props
 export type BackButtonProps = {
-  style?: string;
+  style?: object;
   iconSize?: number;
+  onPress?: () => void;
 };
 
 // General input props
@@ -86,12 +87,16 @@ export interface InputProps extends TextInputProps {
   inputRef?: React.RefObject<TextInput>;
 }
 
-// User types
+// ✅ Updated UserType to include dob
 export type UserType = {
   uid?: string;
   email?: string | null;
   name: string | null;
+  dob?: string | null;
   image?: any | null;
+  onboardingComplete?: boolean;
+  preferredWakeTime?: string;
+preferredSleepTime?: string;
 };
 
 export type UserDataType = {
@@ -99,7 +104,7 @@ export type UserDataType = {
   image?: any;
 };
 
-// Auth context type
+// ✅ Updated AuthContextType to accept dob as 4th argument for register
 export type AuthContextType = {
   user: UserType | null;
   setUser: (user: UserType | null) => void;
@@ -110,7 +115,18 @@ export type AuthContextType = {
   register: (
     email: string,
     password: string,
-    name: string
+    name: string,
+    dob: string
   ) => Promise<{ success: boolean; msg?: string }>;
   updateUserData: (userId: string) => Promise<void>;
+};
+
+export type SleepTimePickerProps = {
+  value: Date;
+  onChange: (date: Date) => void;
+};
+
+export type MoodPickerProps = {
+  selectedMood: string;
+  onSelect: (mood: string) => void;
 };

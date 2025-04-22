@@ -20,12 +20,12 @@ const Welcome = () => {
                 {/* Login Section */}
                 <View>
                     <TouchableOpacity onPress={()=> router.push('/(auth)/login')} style={styles.loginButton}>
-                        <Typo fontWeight="500">Sign in</Typo>
+                        <Typo fontWeight="500" color={colors.purple} >Sign in</Typo>
                     </TouchableOpacity>
 
                     <Animated.Image
                         entering={FadeIn.duration(2000)} // loading the image 
-                        source={require("../../assets/images/welcome.jpg")}
+                        source={require("../../assets/images/welcome.png")}
                         style={styles.welcomeImage}
                         resizeMode="contain"
                     />
@@ -38,14 +38,14 @@ const Welcome = () => {
                 >
                     <View style={{ alignItems: "center" }}>
                         <Typo size={30} fontWeight="800">Always take control</Typo>
-                        <Typo size={30} fontWeight="800">of your finances</Typo>
+                        <Typo size={30} fontWeight="800">of your sleep</Typo>
                     </View>
 
                     <Animated.View
                     entering={FadeInDown.delay(500).duration(1000).delay(100).springify().damping(12)}
                      style={{ alignItems: "center", gap: 2 }}>
                         <Typo size={17} color={colors.textLight}>
-                            Finances must be arranged to set a better
+                            Sleep must be tracked to build a better
                         </Typo>
                         <Typo size={17} color={colors.textLight}>
                             lifestyle in future
@@ -53,11 +53,11 @@ const Welcome = () => {
                     </Animated.View>
 
                     <Animated.View
-                    entering={FadeInDown.delay(500).duration(1000).delay(200).springify().damping(12)}
+                    entering={FadeInDown.delay(1000).duration(1500).delay(500).springify().damping(12)}
                      style={styles.buttonContainer}>
                         <Button onPress={()=> router.push("/(auth)/register")}>
                             <Typo size={22} color={colors.neutral900} fontWeight="600">
-                                Get Started
+                                Lets Sleep 
                             </Typo>
                         </Button>
                     </Animated.View>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         paddingTop: spacingY._7,
     },
     welcomeImage: {
-        width: "100%",
+        width: "80%",
         height: verticalScale(300),
         alignSelf: "center",
         marginTop: verticalScale(100),
@@ -102,6 +102,6 @@ const styles = StyleSheet.create({
     },
     getStartedButton: {
         width: "100%",
-        height: verticalScale(55),
+        height: verticalScale(85),
     }
 });

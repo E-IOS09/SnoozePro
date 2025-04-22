@@ -91,7 +91,7 @@ const Login = () => {
                         onPress={() => router.push("/(auth)/register")}
                         style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
                     >
-                        <Typo size={15} color={colors.primary} fontWeight={'700'}>
+                        <Typo size={15} color={colors.purple} fontWeight={'700'}>
                             Sign Up
                         </Typo>
                     </Pressable>
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     },
     loginButton: {
         marginTop: spacingY._20,
-        backgroundColor: colors.primary,
+        backgroundColor: colors.purple,
         borderRadius: 12,
         paddingVertical: spacingY._15,
         // Add these fixes:
