@@ -40,6 +40,8 @@ export const SleepProvider = ({ children }: { children: ReactNode }) => {
       const ref = doc(firestore, "users", user.uid, "sleepData", dateKey);
       await setDoc(ref, entry);
       console.log("Sleep entry saved to Firestore");
+
+      await getAllSleepData(); // ✅ Fetch fresh list immediately
     } catch (error) {
       console.error("Error saving sleep data:", error);
     }

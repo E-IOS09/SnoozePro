@@ -49,13 +49,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const register = async (email: string, password: string, name: string) => {
+  const register = async (email: string, password: string, name: string, dob: string) => {
     try {
       const response = await createUserWithEmailAndPassword(auth, email, password);
       await setDoc(doc(firestore, "users", response.user.uid), {
         name,
         email,
         uid: response.user.uid,
+        dob,
+        onboardingComplete: false, // ✅ Always add onboarding field
       });
       return { success: true };
     } catch (error: any) {

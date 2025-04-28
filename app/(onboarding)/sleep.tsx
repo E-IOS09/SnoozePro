@@ -21,7 +21,7 @@ const SleepScreen = () => {
   const [sleepTime, setSleepTime] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
   const router = useRouter();
-  const { user } = useAuth();
+  const { user , updateUserData} = useAuth();
   const { wakeTime } = useLocalSearchParams();
 
   const handleSave = async () => {
@@ -34,6 +34,8 @@ const SleepScreen = () => {
         preferredSleepTime: sleepTime.toISOString(),
         onboardingComplete: true,
       });
+
+      await updateUserData(user.uid); // ✅ Refresh user context after saving
 
       Alert.alert("Success", "Your preferences are saved 💤");
       router.replace("/(tabs)");
