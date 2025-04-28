@@ -6,10 +6,11 @@ import { useAuth } from "@/contexts/authContext";
 
 // Define the type for a sleep entry
 type SleepEntry = {
-  sleepDurationHours: any;
   id: string; // Firestore document ID (usually the date string)
-  moodValue: string;
   sleepDateTime: string;
+  wakeDateTime: string;
+  sleepDurationHours: number;
+  moodValue: string;
 };
 
 // Define the shape of the context
@@ -63,8 +64,10 @@ export const SleepProvider = ({ children }: { children: ReactNode }) => {
         const docData = docSnap.data();
         data.push({
           id: docSnap.id,
-          moodValue: docData.moodValue,
           sleepDateTime: docData.sleepDateTime,
+          wakeDateTime: docData.wakeDateTime,
+          sleepDurationHours: docData.sleepDurationHours,
+          moodValue: docData.moodValue,
         });
       });
 

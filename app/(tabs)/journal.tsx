@@ -31,21 +31,39 @@ const Journal = () => {
             <FlatList
               data={sleepEntries}
               keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <View style={styles.entry}>
-                  <Text style={styles.entryText}>
-                    💤 Slept on{new Date(item.sleepDateTime).toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                })} at {new Date(item.sleepDateTime).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })} for {item.sleepDurationHours?.toFixed(1) || "0"} hours
-                    | Mood: {item.moodValue}
-                  </Text>
-                </View>
-              )}
+              renderItem={({ item }) => {
+                const sleepDate = new Date(item.sleepDateTime);
+                const wakeDate = item.wakeDateTime ? new Date(item.wakeDateTime) : null;
+
+                let sleepDuration = item.sleepDurationHours || 0;
+
+                return (
+                  <View style={styles.entry}>
+                    <Text style={styles.entryText}>
+                      💤 Slept on {sleepDate.toLocaleDateString("en-GB", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })} from {sleepDate.toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                      {wakeDate ? (
+                        <> to {wakeDate.toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: true,
+                        })}</>
+                      ) : (
+                        <> (wake time not logged)</>
+                      )}
+                      {" "}for {sleepDuration.toFixed(1)} hours
+                      {"\n"}| Mood: {item.moodValue}
+                    </Text>
+                  </View>
+                );
+              }}
             />
           )}
         </View>

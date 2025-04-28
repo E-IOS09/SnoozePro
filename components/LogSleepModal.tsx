@@ -14,6 +14,7 @@ import BackButton from "@/components/BackButton";
 import MoodPicker from "@/components/MoodPicker";
 import { useSleep } from "@/contexts/SleepContext"; // ✅ Firebase context
 
+// Define the props type
 type LogSleepModalProps = {
   visible: boolean;
   onClose: () => void;
@@ -31,30 +32,26 @@ const LogSleepModal = ({ visible, onClose }: LogSleepModalProps) => {
   const sideImageRight = centerImage;
 
   const [sleepDate, setSleepDate] = useState(new Date());
+  const [wakeDate, setWakeDate] = useState(new Date());
   const [selectedMood, setSelectedMood] = useState("Great");
 
   const { addSleepData } = useSleep();
 
-  // Calculate sleep hours 
-  const calculateSleepDuration = (sleepDate: Date) => {
-    const now = new Date();
-    let adjustedNow = new Date(now);
-  
-    if (now.getTime() < sleepDate.getTime()) {
-      adjustedNow.setDate(adjustedNow.getDate() + 1);
+  const calculateSleepDuration = (sleepDate: Date, wakeDate: Date) => {
+    let durationMs = wakeDate.getTime() - sleepDate.getTime();
+    if (durationMs < 0) {
+      // Crossed midnight case
+      durationMs += 24 * 60 * 60 * 1000;
     }
-  
-    const durationMs = adjustedNow.getTime() - sleepDate.getTime();
-    const durationHours = durationMs / (1000 * 60 * 60);
-  
-    return durationHours;
+    return durationMs / (1000 * 60 * 60); // in hours
   };
 
   const handleSave = async () => {
-    const sleepDuration = calculateSleepDuration(sleepDate);
+    const sleepDuration = calculateSleepDuration(sleepDate, wakeDate);
     const entry = {
       moodValue: selectedMood,
       sleepDateTime: sleepDate.toISOString(),
+      wakeDateTime: wakeDate.toISOString(),
       sleepDurationHours: sleepDuration,
     };
     const dateKey = sleepDate.toISOString().split("T")[0];
@@ -79,22 +76,19 @@ const LogSleepModal = ({ visible, onClose }: LogSleepModalProps) => {
 
           <Image source={centerImage} style={styles.centerImage} resizeMode="contain" />
 
-          <SleepTimePicker value={sleepDate} onChange={setSleepDate} />
+          <Text style={styles.subTitle}>When did you sleep?</Text>
+          <SleepTimePicker value={sleepDate} onChange={setSleepDate} label={""} />
+
+          <Text style={styles.subTitle}>When did you wake up?</Text>
+          <SleepTimePicker value={wakeDate} onChange={setWakeDate} label={""} />
 
           <MoodPicker selectedMood={selectedMood} onSelect={setSelectedMood} />
 
           <View style={styles.buttonRow}>
-            <Pressable
-              style={[styles.button, styles.saveButton]}
-              onPress={handleSave}
-            >
+            <Pressable style={[styles.button, styles.saveButton]} onPress={handleSave}>
               <Text style={styles.buttonText}>Save</Text>
             </Pressable>
-
-            <Pressable
-              style={[styles.button, styles.closeButton]}
-              onPress={onClose}
-            >
+            <Pressable style={[styles.button, styles.closeButton]} onPress={onClose}>
               <Text style={styles.buttonText}>Close</Text>
             </Pressable>
           </View>
@@ -136,6 +130,13 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 150,
     marginVertical: 10,
+  },
+  subTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginTop: 20,
+    marginBottom: 5,
+    textAlign: "center",
   },
   buttonRow: {
     flexDirection: "row",

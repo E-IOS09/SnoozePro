@@ -1,37 +1,37 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Pressable, Platform } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { SleepTimePickerProps } from "@/types";
 
-const SleepTimePicker: React.FC<SleepTimePickerProps> = ({ value, onChange }) => {
-  const [pickerMode, setPickerMode] = useState<"date" | "time" | null>(null);
+type SleepTimePickerProps = {
+  value: Date;
+  onChange: (date: Date) => void;
+  label: string; // ✅ new
+};
 
-  const showPicker = (mode: "date" | "time") => {
-    setPickerMode(mode);
-  };
+const SleepTimePicker = ({ value, onChange, label }: SleepTimePickerProps) => {
+  const [showPicker, setShowPicker] = useState(false);
 
-  const handleChange = (_: any, selectedDate?: Date) => {
-    if (selectedDate) {
-      onChange(selectedDate);
-
-      if (Platform.OS === "android") {
-        if (pickerMode === "date") {
-          setTimeout(() => setPickerMode("time"), 200);
-        } else {
-          setPickerMode(null);
-        }
+  const handleChange = (event: any, selectedDate?: Date) => {
+    if (Platform.OS === "android") {
+      setShowPicker(false);
+      if (event.type === "set" && selectedDate) {
+        onChange(selectedDate);
       }
     } else {
-      setPickerMode(null);
+      if (selectedDate) onChange(selectedDate);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>When did you sleep?</Text>
+      <Text style={styles.label}>{label}</Text>
+
       <View style={styles.row}>
-        <Pressable style={styles.box} onPress={() => showPicker("date")}>
-          <Text style={styles.boxText}>
+        <Pressable
+          style={styles.dateButton}
+          onPress={() => setShowPicker((prev) => !prev)}
+        >
+          <Text style={styles.dateText}>
             {value.toLocaleDateString("en-GB", {
               day: "2-digit",
               month: "short",
@@ -39,20 +39,25 @@ const SleepTimePicker: React.FC<SleepTimePickerProps> = ({ value, onChange }) =>
             })}
           </Text>
         </Pressable>
-        <Pressable style={styles.box} onPress={() => showPicker("time")}>
-          <Text style={styles.boxText}>
+
+        <Pressable
+          style={styles.dateButton}
+          onPress={() => setShowPicker((prev) => !prev)}
+        >
+          <Text style={styles.dateText}>
             {value.toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
+              hour12: false,
             })}
           </Text>
         </Pressable>
       </View>
 
-      {pickerMode && (
+      {showPicker && (
         <DateTimePicker
           value={value}
-          mode={pickerMode}
+          mode="datetime"
           display={Platform.OS === "ios" ? "spinner" : "default"}
           onChange={handleChange}
         />
@@ -65,29 +70,30 @@ export default SleepTimePicker;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    marginVertical: 30,
-  },
-  title: {
-    color: "#000",
-    fontSize: 22,
-    fontWeight: "600",
     marginBottom: 20,
+    alignItems: "center",
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 5,
+    textAlign: "center",
   },
   row: {
     flexDirection: "row",
     gap: 12,
   },
-  box: {
-    backgroundColor: "#3d3d3d",
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+  dateButton: {
+    backgroundColor: "#333",
+    paddingVertical: 10,
+    paddingHorizontal: 16,
     borderRadius: 12,
+    minWidth: 110,
     alignItems: "center",
   },
-  boxText: {
+  dateText: {
     color: "#fff",
-    fontSize: 18,
-    fontWeight: "700",
+    fontWeight: "600",
+    fontSize: 16,
   },
 });
