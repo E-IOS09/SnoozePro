@@ -17,14 +17,14 @@ const WakeScreen = () => {
   const [showPicker, setShowPicker] = useState(false);
   const router = useRouter();
 
-  const handleChange = (event: any, date?: Date) => {
+  const handleChange = (event: any, selectedDate?: Date) => {
     if (Platform.OS === "android") {
-      if (event.type === "set" && date) {
-        setWakeTime(date);
-      }
       setShowPicker(false);
+      if (event.type === "set" && selectedDate) {
+        setWakeTime(selectedDate);
+      }
     } else {
-      if (date) setWakeTime(date);
+      if (selectedDate) setWakeTime(selectedDate);
     }
   };
 
@@ -35,28 +35,36 @@ const WakeScreen = () => {
       resizeMode="cover"
     >
       <View style={styles.container}>
+
+        {/* Back Button */}
         <BackButton iconSize={28} style={{ marginBottom: 20 }} />
-
+        
+        {/* Title */}
         <Text style={styles.title}>When do you usually wake up?</Text>
-
+         
+         {/* Wake Time Display */}
         <Pressable style={styles.timeButton} onPress={() => setShowPicker(true)}>
           <Text style={styles.timeText}>
-            {wakeTime.toLocaleTimeString([], {
-              hour: "2-digit",
+            {wakeTime.toLocaleTimeString("en-UK" , {
+              hour: "numeric",
               minute: "2-digit",
+              hour12: true,  // Forces AM/PM 
             })}
           </Text>
         </Pressable>
-
+        
+        {/* DateTimePicker */}
         {showPicker && (
           <DateTimePicker
             value={wakeTime}
             mode="time"
             display={Platform.OS === "ios" ? "spinner" : "default"}
             onChange={handleChange}
+            themeVariant={Platform.OS === "ios" ? "dark" : "light"}
           />
         )}
-
+         
+         {/* Next Button */}
         <Pressable
           style={styles.nextButton}
           onPress={() =>

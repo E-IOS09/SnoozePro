@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/authContext";
 
 // Define the type for a sleep entry
 type SleepEntry = {
+  sleepDurationHours: any;
   id: string; // Firestore document ID (usually the date string)
   moodValue: string;
   sleepDateTime: string;

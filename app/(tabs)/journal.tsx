@@ -34,15 +34,14 @@ const Journal = () => {
               renderItem={({ item }) => (
                 <View style={styles.entry}>
                   <Text style={styles.entryText}>
-                    💤{new Date(item.sleepDateTime).toLocaleDateString("en-GB", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-})} at {new Date(item.sleepDateTime).toLocaleTimeString([], {
-  hour: "2-digit",
-  minute: "2-digit",
-})}
-
+                    💤 Slept on{new Date(item.sleepDateTime).toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                })} at {new Date(item.sleepDateTime).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })} for {item.sleepDurationHours?.toFixed(1) || "0"} hours
                     | Mood: {item.moodValue}
                   </Text>
                 </View>

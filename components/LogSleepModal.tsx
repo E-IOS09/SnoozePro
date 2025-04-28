@@ -35,10 +35,27 @@ const LogSleepModal = ({ visible, onClose }: LogSleepModalProps) => {
 
   const { addSleepData } = useSleep();
 
+  // Calculate sleep hours 
+  const calculateSleepDuration = (sleepDate: Date) => {
+    const now = new Date();
+    let adjustedNow = new Date(now);
+  
+    if (now.getTime() < sleepDate.getTime()) {
+      adjustedNow.setDate(adjustedNow.getDate() + 1);
+    }
+  
+    const durationMs = adjustedNow.getTime() - sleepDate.getTime();
+    const durationHours = durationMs / (1000 * 60 * 60);
+  
+    return durationHours;
+  };
+
   const handleSave = async () => {
+    const sleepDuration = calculateSleepDuration(sleepDate);
     const entry = {
       moodValue: selectedMood,
       sleepDateTime: sleepDate.toISOString(),
+      sleepDurationHours: sleepDuration,
     };
     const dateKey = sleepDate.toISOString().split("T")[0];
     await addSleepData(entry, dateKey);

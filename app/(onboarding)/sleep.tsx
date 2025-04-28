@@ -69,7 +69,7 @@ const SleepScreen = () => {
 
         <Pressable style={styles.timeButton} onPress={() => setShowPicker((prev) => !prev)}>
           <Text style={styles.timeText}>
-            {sleepTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            {sleepTime.toLocaleTimeString("en-UK", { hour: "numeric", minute: "2-digit", hour12: true, })}
           </Text>
         </Pressable>
 
