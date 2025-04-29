@@ -84,6 +84,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           onboardingComplete: data.onboardingComplete || false,
           preferredWakeTime: data.preferredWakeTime || null,   
           preferredSleepTime: data.preferredSleepTime || null,
+          streakCount: data.streakCount || 0,
+          badges: data.badges || [],
         };
         setUser(userData);
       }

@@ -96,7 +96,9 @@ export type UserType = {
   image?: any | null;
   onboardingComplete?: boolean;
   preferredWakeTime?: string;
-preferredSleepTime?: string;
+  preferredSleepTime?: string;
+  streakCount?: number;
+  badges?: string[];
 };
 
 export type UserDataType = {
