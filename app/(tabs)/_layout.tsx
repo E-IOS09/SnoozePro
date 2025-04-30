@@ -9,6 +9,7 @@ const Layout = () => {
     <Tabs tabBar={(props) => <CustomTabs {...props} />} screenOptions={{ headerShown: true }}>
       <Tabs.Screen name="index" options={{ title: "Home" }} />
       <Tabs.Screen name="journal" options={{ title: "Journal" }} />
+      <Tabs.Screen name="analytics" options={{ title: "Analytics" }} />
       <Tabs.Screen name="profile" options={{ title: "Profile" }} />
     </Tabs>
   );

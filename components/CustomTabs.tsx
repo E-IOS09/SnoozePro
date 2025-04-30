@@ -65,27 +65,27 @@ export function CustomTabs({ state, descriptors, navigation }: BottomTabBarProps
 
 
 const styles = StyleSheet.create({
-    tabBar: {
-      position: 'absolute',
-      bottom: 50,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      backgroundColor: '#fff',
-      marginHorizontal: 80,
-      paddingVertical: 15 ,
-      borderRadius: 35,
-      shadowColor: '#000',
-      shadowOffset: {width: 0, height: 10},
-      shadowRadius: 10,
-      shadowOpacity: 0.1,
-    },
+  tabBar: {
+    position: 'absolute',
+    bottom: 50,
+    left: 20,     // small left space
+    right: 20,    // small right space
+    flexDirection: 'row',
+    justifyContent: 'space-evenly', // or 'space-around'
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 15,
+    borderRadius: 35,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowRadius: 10,
+    shadowOpacity: 0.1,
+  },
 
-    tabBarItem:{
-        flex:1, 
-        justifyContent: "center",
-        alignItems: 'center',
-        gap : 5 
-    }
-  });
+  tabBarItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 10, // small padding around each tab
+  }
+});
 
