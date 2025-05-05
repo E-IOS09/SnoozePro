@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
 import { colors } from "@/constants/theme";
-import { useRouter } from "expo-router";
-import { useEffect } from "react";
+import { LogBox } from 'react-native';
 
 const Index = () => {
+
+  LogBox.ignoreAllLogs(true); // Hides all warnings and errors
+  
   // const router = useRouter();
   // useEffect(() => {
   //   setTimeout(() => {

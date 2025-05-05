@@ -10,6 +10,7 @@ import { signOut } from "firebase/auth";
 import { auth, firestore } from "@/config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { scheduleSleepReminderFromPrefs, sendTestNotification } from "@/utils/notifications";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -27,6 +28,10 @@ const Profile = () => {
         setStreakCount(data.streakCount || 0);
         setBadges(data.badges || []);
       }
+      if (user?.preferredSleepTime && user?.preferredWakeTime) {
+        await scheduleSleepReminderFromPrefs(user.preferredSleepTime, user.preferredWakeTime);
+      }
+
     };
 
     fetchUserStats();
@@ -86,6 +91,13 @@ const Profile = () => {
               </Typo>
             </Button>
           </View>
+
+          <Button onPress={sendTestNotification} style={styles.logoutButtonStyle}>
+  <Typo size={18} color={colors.neutral900} fontWeight="600">
+    Send Test Notification
+  </Typo>
+</Button>
+
         </View>
       </View>
     </ImageBackground>

@@ -1,50 +1,90 @@
-# Welcome to your Expo app 👋
+# SnoozePro Sleep Tracker
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## 🎋 Intro
+SnoozePro is a cross-platform sleep tracking application designed to help users build healthier sleep habits. Users can log their sleep, track their mood, view analytics, and stay motivated through streaks and badges.
 
-## Get started
+## 📦 Tech Stack
+- **React Native (Expo)**
+- **TypeScript**
+- **Firebase (Authentication + Firestore)**
+- **React Navigation**
+- **Expo Notifications**
+- **react-native-chart-kit**
 
-1. Install dependencies
+## 👩🏽‍🍳 Features
+- Secure login/register using Firebase Authentication  
+- Log sleep and wake times manually  
+- Rate sleep mood on a scale (Happy, Neutral, Sad)  
+- Sleep streak tracking and motivational badge system  
+- Personalized greetings based on the time of day  
+- Set preferred sleep and wake time  
+- View 7-day graphs (sleep duration, mood trends)  
+- Push notifications (reminders before sleep, log reminders)  
+- Consistent dark-themed UI with calming visuals  
+- Cross-platform: Works on iOS, Android, and Web
 
-   ```bash
-   npm install
-   ```
+## 💭 Process
+We began by analyzing existing sleep apps and reviewing user needs from sources like the Sleep Foundation. Using Figma, Paula designed the UI with a soothing visual style. Diana handled Firebase Firestore structure and authentication. Eshita implemented logic for sleep logging, mood tracking, badge unlocking, and analytics.  
+We collaborated via Discord and Trello, splitting features based on individual strengths. Testing was done using Expo Go on real devices to ensure Firebase and notification functionality.
 
-2. Start the app
+## 📚 Learnings
+- Setting up secure Firebase rules and document structure  
+- Using Expo CLI for cross-platform development  
+- Implementing dynamic chart data with chart-kit  
+- State management using Context API  
+- Handling notification triggers based on custom times  
+- Creating a clean and intuitive mobile UI
 
-   ```bash
-    npx expo start
-   ```
+## ✨ Improvement
+- Notification logic can be more reliable and customizable  
+- Add onboarding help pop-ups and tips  
+- Include biometric login (Face ID / Touch ID)  
+- Add advanced analytics: monthly/yearly stats  
+- Expand badge system with animations and sound feedback  
+- Add offline support with data sync
 
-In the output, you'll find options to open the app in a
+## 🚦 Running the Project
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
+### ✅ 1. Clone the Repository
 ```bash
-npm run reset-project
+git clone https://github.com/yourusername/snoozepro.git
+cd snoozepro
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### ✅ 2. Install Dependencies
+```bash
+npm install
+```
 
-## Learn more
+### ✅ 3. Firebase Setup
+- Create a `.env` file in the root directory.
+- Add your Firebase config keys like this:
+```env
+FIREBASE_API_KEY=your_key
+FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+FIREBASE_PROJECT_ID=your_project_id
+...
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### ✅ 4. Start the App with Expo
+```bash
+npx expo start
+```
+- Scan the QR code with Expo Go app on your real device  
+- Or press `w` to open in web browser
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### ✅ 5. Build Standalone Apps
+- Make sure you’re logged into Expo:
+```bash
+npx expo login
+```
+- For Android:
+```bash
+npx expo build:android
+```
+- For iOS (Apple Developer Account required):
+```bash
+npx expo build:ios
+```
+📸 Video or Image:
+📽️ https://mmutube.mmu.ac.uk/media/Restful+Sleep+Tracker_SnoozePro+/1_ow2ai52t

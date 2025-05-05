@@ -2,9 +2,17 @@ import { StyleSheet } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import { CustomTabs } from "@/components/CustomTabs";
-import { SleepProvider } from "@/contexts/SleepContext";
+import * as Notifications from "expo-notifications";
 
 const Layout = () => {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+
   return (
     <Tabs tabBar={(props) => <CustomTabs {...props} />} screenOptions={{ headerShown: true }}>
       <Tabs.Screen name="index" options={{ title: "Home" }} />
